@@ -38,5 +38,19 @@ class NegociacaoController {
         this._mensagem.texto = 'Negociações apagadas com sucesso';
     }
 
+
+    importaNegociacoes() {
+        let service = new NegociacoesService();
+
+        Promise.all([service.obterNegociacoesSemana(), service.obterNegociacoesSemanaAnterior(), service.obterNegociacoesSemanaRetrasada()])
+                .then(negociacoes =>{
+                    negociacoes
+                        .reduce((aux, array) => aux.concat(array) , [])
+                        .forEach(item => this._lista.adiciona(item));
+                    this._mensagem.texto = 'Negociações importadas com sucesso';
+                })
+                .catch(error => this._mensagem.texto = error);
+    }
+
     
 }
