@@ -572,3 +572,4 @@ if (!global.fetch) {
   global.Request = Request;
   global.Response = Response;
 }
+//# sourceMappingURL=fetch.js.map

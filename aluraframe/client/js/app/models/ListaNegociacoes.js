@@ -38,3 +38,4 @@ var ListaNegociacoes = function () {
 
     return ListaNegociacoes;
 }();
+//# sourceMappingURL=ListaNegociacoes.js.map

@@ -131,3 +131,4 @@ var NegociacoesService = function () {
 
     return NegociacoesService;
 }();
+//# sourceMappingURL=NegociacoesService.js.map
