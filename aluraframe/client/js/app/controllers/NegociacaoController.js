@@ -10,21 +10,43 @@ class NegociacaoController {
         this._mensagem = new Bind(new Mensagem(), new MensagemView($("#mensagemView")), 'texto');    
 
         this._ordemAtual = '';
+
+        ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.listaTodos())
+            .then(negociacoes => negociacoes.forEach(item => { this._lista.adiciona(item) }))
+            .catch(erro => {
+                console.log(erro);
+                this._mensagem.texto = erro;
+            });            
     }
 
     adiciona(event){
+
         event.preventDefault();
-       this._lista.adiciona(this._criaNegociacao());       
-       this._mensagem.texto = "Negociação adicionada com sucesso!"
-       this._limpaFormulario();
+
+        ConnectionFactory
+            .getConnection()
+            .then(connection => {
+                let negociacao = this._criaNegociacao();
+                new NegociacaoDao(connection)
+                    .adiciona(negociacao)
+                    .then(() => {
+                        this._lista.adiciona(negociacao);       
+                        this._mensagem.texto = "Negociação adicionada com sucesso!"
+                        this._limpaFormulario();
+                    });
+            })
+            .catch(erro => this._mensagem.texto = erro);
     }
 
     _criaNegociacao(){
         return new Negociacao(
             DateHelper.textToDate(this._inputData.value),
-            this._inputQuantidade.value,
-            this._inputValor.value
-        )
+            parseInt(this._inputQuantidade.value),
+            parseFloat(this._inputValor.value)
+        );
     }
 
 
@@ -36,8 +58,20 @@ class NegociacaoController {
     }
 
     apaga() {
-        this._lista.esvazia();
-        this._mensagem.texto = 'Negociações apagadas com sucesso';
+        ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.apagaTodos())
+            .then(mensagem => {
+                this._lista.esvazia();
+                this._mensagem.texto = mensagem;
+            })
+            .catch(erro => {
+                console.log(erro);
+                this._mensagem.texto = erro;
+            });            
+
+
     }
 
 
@@ -58,11 +92,12 @@ class NegociacaoController {
         if(this._ordemAtual == coluna){
             this._lista.inverteOrdem();
         }else{
-
             this._lista.ordena((a, b) => a[coluna] - b[coluna]);
         }
         this._ordemAtual = coluna;
     }
 
+
+    
     
 }
