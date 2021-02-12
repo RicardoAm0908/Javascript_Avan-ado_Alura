@@ -1,5 +1,3 @@
-'use strict';
-
 if (!Array.prototype.includes) {
 
     // Se não existir, adiciona

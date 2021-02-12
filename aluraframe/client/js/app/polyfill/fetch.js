@@ -1,15 +1,5 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-exports.Headers = Headers;
-exports.Request = Request;
-exports.Response = Response;
-exports.fetch = fetch;
 var global = typeof globalThis !== 'undefined' && globalThis || typeof self !== 'undefined' && self || typeof global !== 'undefined' && global;
 
 var support = {
@@ -74,7 +64,7 @@ function iteratorFor(items) {
   return iterator;
 }
 
-function Headers(headers) {
+export function Headers(headers) {
   this.map = {};
 
   if (headers instanceof Headers) {
@@ -324,7 +314,7 @@ function normalizeMethod(method) {
   return methods.indexOf(upcased) > -1 ? upcased : method;
 }
 
-function Request(input, options) {
+export function Request(input, options) {
   if (!(this instanceof Request)) {
     throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
   }
@@ -422,7 +412,7 @@ function parseHeaders(rawHeaders) {
 
 Body.call(Request.prototype);
 
-function Response(bodyInit, options) {
+export function Response(bodyInit, options) {
   if (!(this instanceof Response)) {
     throw new TypeError('Please use the "new" operator, this DOM object constructor cannot be called as a function.');
   }
@@ -466,11 +456,11 @@ Response.redirect = function (url, status) {
   return new Response(null, { status: status, headers: { location: url } });
 };
 
-var DOMException = exports.DOMException = global.DOMException;
+export var DOMException = global.DOMException;
 try {
   new DOMException();
 } catch (err) {
-  exports.DOMException = DOMException = function DOMException(message, name) {
+  DOMException = function DOMException(message, name) {
     this.message = message;
     this.name = name;
     var error = Error(message);
@@ -480,7 +470,7 @@ try {
   DOMException.prototype.constructor = DOMException;
 }
 
-function fetch(input, init) {
+export function fetch(input, init) {
   return new Promise(function (resolve, reject) {
     var request = new Request(input, init);
 
